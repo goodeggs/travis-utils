@@ -7,6 +7,6 @@ unzip $CHROMEDRIVER
 sudo install chromedriver /usr/bin
 
 export DISPLAY=:99.0
-sudo -E /etc/init.d/xvfb start
+sh -e /etc/init.d/xvfb start
 chromedriver "$@" &
 
