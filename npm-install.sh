@@ -1,6 +1,9 @@
 #!/bin/sh
 set -ex
 
+# travis_retry isn't available to sub-scripts
+retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
+
 npm prune
 npm cache clean
 
@@ -9,7 +12,7 @@ if test -f ./node_modules/.node-version && [ $(cat ./node_modules/.node-version)
   npm rebuild
 fi
 
-travis_retry npm install
+retry npm install
 
 echo `node -v` > ./node_modules/.node-version
 
