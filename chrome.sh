@@ -26,6 +26,6 @@ else
 fi
 
 # Download a custom chrome-sandbox which works inside OpenVC containers (used on travis).
-curl -Lo chrome-standbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
+curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
 sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
 
