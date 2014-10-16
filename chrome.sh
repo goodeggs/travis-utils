@@ -14,7 +14,7 @@ sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
 CHROME=google-chrome-${CHROME_VERSION:-stable}_current_amd64.deb
 curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
-sudo dpkg --install $CHROME
+sudo dpkg --install $CHROME || sudo apt-get --fix-broken install
 
 # versions like "stable" install in /opt/google/chrome, whereas "beta" installs in /opt/google/chrome-beta
 if [ -f /opt/google/chrome/chrome-sandbox ]; then
