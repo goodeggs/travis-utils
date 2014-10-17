@@ -8,7 +8,7 @@ Installs [Google Chrome](https://www.google.com/chrome/), including a custom bui
 
 ```yaml
 before_script:
-  - "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/chrome.sh | sh"
+  - "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/chrome.sh | sh"
 ```
 
 ## chromedriver.sh
@@ -17,7 +17,7 @@ Installs and starts a blessed version of [Chromedriver](https://code.google.com/
 
 ```yaml
 before_script:
-  - "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/chromedriver.sh | sh"
+  - "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/chromedriver.sh | sh"
 ```
 
 ## npm-install.sh
@@ -25,7 +25,7 @@ before_script:
 Glorified `npm install` that handles the presence of a cached `node_modules` directory (pruning, rebuilding if node version changed).  Use it as your `install` command for node-based projects:
 
 ```yaml
-install: "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/npm-install.sh | sh"
+install: "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/npm-install.sh | sh"
 ```
 
 ## mongodb.sh
@@ -34,6 +34,6 @@ Installs MongoDB from their official APT repo.  You may specify the APT package 
 
 ```yaml
 before_script:
-  - "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/mongodb.sh | sh"
+  - "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/mongodb.sh | sh"
 ```
 
