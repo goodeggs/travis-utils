@@ -28,3 +28,12 @@ Glorified `npm install` that handles the presence of a cached `node_modules` dir
 install: "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/npm-install.sh | sh"
 ```
 
+## mongodb.sh
+
+Installs MongoDB from their official APT repo.  You may specify the APT package version with the `MONGO_VERSION` environment variable.  Use it in your `before_script` section:
+
+```yaml
+before_script:
+  - "\curl -sSL https://github.com/goodeggs/travis-utils/raw/master/mongodb.sh | sh"
+```
+
