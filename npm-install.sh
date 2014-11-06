@@ -4,8 +4,6 @@ set -ex
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
-pwd
-
 npm prune
 npm cache clean
 
