@@ -13,7 +13,9 @@ sudo apt-get update --fix-missing
 sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
 CHROME=google-chrome-${CHROME_VERSION:-stable}_current_amd64.deb
-curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
+# pegged to Chrome 39 because we're having widespread spec failures with Chrome 40
+#curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
+curl -Lo $CHROME https://s3.amazonaws.com/travis-utils/google-chrome-stable_39.0.2171.99-1_amd64.deb
 if ! sudo dpkg --install $CHROME; then
   sudo apt-get --fix-broken install
 fi
