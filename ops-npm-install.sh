@@ -17,8 +17,8 @@ retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 #   hopefully filling any gaps left from `install` and `prune`.
 # - but `npm update` doesn't run aperture (for symlinks)... oy.
 #
-npm cache clean
-npm prune
+retry npm cache clean
+retry npm prune
 retry npm install
 retry npm update
 
