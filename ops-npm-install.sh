@@ -1,8 +1,11 @@
 #!/bin/sh
 set -ex
 
+# environment info
 node -v
 npm -v
+npm config get cache   # show dir
+npm cache ls | wc -l   # dumb count. (too many lines to fully dump)
 
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
