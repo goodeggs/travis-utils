@@ -10,8 +10,7 @@ npm cache ls | wc -l   # dumb count. (too many lines to fully dump)
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
-ls node_modules/
-rm -rf node_modules
+ls node_modules/ || true
 retry npm install
 
 if test -f ./node_modules/.node-version && [ $(cat ./node_modules/.node-version) != `node -v` ]; then
