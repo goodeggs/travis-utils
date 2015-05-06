@@ -20,10 +20,10 @@ retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 #   hopefully filling any gaps left from `install` and `prune`.
 # - but `npm update` doesn't run aperture (for symlinks)... oy.
 #
-retry npm cache clean
-retry npm prune
+#retry npm cache clean
+#retry npm prune
 retry npm install
-retry npm update
+#retry npm update
 
 if test -f ./node_modules/.node-version && [ $(cat ./node_modules/.node-version) != `node -v` ]; then
   echo "Node version changed since last build; rebuilding dependencies"
