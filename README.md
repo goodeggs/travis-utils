@@ -37,3 +37,12 @@ before_script:
   - "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/mongodb.sh | sh"
 ```
 
+## r.sh
+
+Installs R from their official APT repo.  You may specify the APT package version with the `R_VERSION` environment variable.  Use it in your `before_script` section:
+
+```yaml
+before_script:
+  - "curl -sSL https://github.com/goodeggs/travis-utils/raw/master/r.sh | sh"
+```
+
