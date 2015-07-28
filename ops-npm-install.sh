@@ -1,6 +1,8 @@
 #!/bin/sh
 set -ex
 
+npm install -g npm@2.x
+
 # environment info
 node -v
 npm -v
