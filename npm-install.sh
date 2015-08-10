@@ -4,6 +4,9 @@ set -ex
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
+# install npm v2
+retry npm install -g npm@2.13.4
+
 npm prune
 npm cache clean
 
