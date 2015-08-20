@@ -12,3 +12,12 @@ echo 'deb http://cran.cnr.berkeley.edu/bin/linux/ubuntu precise/' | sudo tee /et
 sudo apt-get update
 sudo apt-get install $R_PACKAGE
 
+# handle dependencies like https://github.com/virtualstaticvoid/heroku-buildpack-r
+if [ -f init.r ]; then
+  R -s <<RPROG > indent
+    r <- getOption("repos");
+    r["CRAN"] <- "${CRAN_MIRROR:-http://cran.revolutionanalytics.com}";
+    options(repos=r);
+    `cat init.r`
+RPROG
+fi
