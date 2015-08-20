@@ -16,7 +16,7 @@ sudo apt-get install $R_PACKAGE
 if [ -f init.r ]; then
 
   # default libs directory is not writable
-  if [ "$R_LIBS" == ]; then
+  if [ "$R_LIBS" == "" ]; then
     export R_LIBS="$PWD/r_libs"
     mkdir -p $R_LIBS
   fi
