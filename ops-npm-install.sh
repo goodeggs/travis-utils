@@ -1,7 +1,9 @@
 #!/bin/sh
 set -ex
 
-echo $NPM_AUTH # temporary, for debugging
+# temporary, for debugging
+echo $NPM_AUTH
+echo $CXX
 
 npm install -g npm@3.x
 
