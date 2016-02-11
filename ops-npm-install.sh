@@ -1,11 +1,6 @@
 #!/bin/sh
 set -ex
 
-# temporary, for debugging
-echo NPM_AUTH=$NPM_AUTH
-echo CXX=$CXX
-echo TRAVIS_SECURE_ENV_VARS=$TRAVIS_SECURE_ENV_VARS
-
 npm install -g npm@3.x
 
 # environment info
