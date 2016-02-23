@@ -6,6 +6,7 @@ retry () { for _ in 1 2 3; do "$@" && return 0; sleep 10; done; return 1; }
 
 # install npm 3.9 or whatever
 retry npm install -g "npm@${NPM_VERSION:-3.9}"
+npm -v
 
 npm prune
 npm cache clean
@@ -17,4 +18,4 @@ fi
 
 retry npm install
 
-node -v > ./node_modules/.node-version
+echo `node -v` > ./node_modules/.node-version
