@@ -8,7 +8,7 @@ ls -l /dev/shm
 sudo chmod 1777 /dev/shm
 ls -l /dev/shm
 
-sudo apt-get update --fix-missing
+sudo apt-get update --fix-missing || true
 
 sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
