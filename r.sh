@@ -9,7 +9,7 @@ fi
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
 sudo add-apt-repository ppa:marutter/rrutter
-sudo apt-get update
+sudo apt-get update || true
 sudo apt-get install $R_PACKAGE
 
 # handle dependencies like https://github.com/virtualstaticvoid/heroku-buildpack-r
