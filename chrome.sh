@@ -13,7 +13,8 @@ sudo apt-get update --fix-missing || true
 sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
 CHROME=google-chrome-${CHROME_VERSION:-stable}_current_amd64.deb
-curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
+#curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
+curl -Lo $CHROME https://s3.amazonaws.com/travis-utils/google-chrome-stable_49.0.2623.112-1_amd64.deb
 if ! sudo dpkg --install $CHROME; then
   sudo apt-get --fix-broken install
 fi
