@@ -6,6 +6,6 @@ curl -Lo $CHROMEDRIVER http://chromedriver.storage.googleapis.com/${CHROMEDRIVER
 unzip $CHROMEDRIVER
 
 export DISPLAY=:99.0
-/etc/init.d/xvfb start
+sh -e /etc/init.d/xvfb start
 
 ./chromedriver "$@" &

@@ -31,4 +31,4 @@ curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vend
 sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
 
 export DISPLAY=:99.0
-/etc/init.d/xvfb start
+sh -e /etc/init.d/xvfb start
