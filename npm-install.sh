@@ -5,7 +5,7 @@ set -ex
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
 # install npm v2
-retry npm install -g npm@2.13.4
+[ `npm -v | awk -F '.' '{print $1}'` -ge 2 ] || retry npm install -g npm@2.13.4
 
 npm prune
 npm cache clean
