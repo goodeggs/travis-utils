@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-npm install -g npm@3.x
+npm install -g npm@3.7.1
 
 # environment info
 node -v
