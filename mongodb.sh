@@ -1,11 +1,12 @@
 #!/bin/sh
 set -ex
 
+sudo service mongodb stop || true # stop the mongodb service if it's running so we can bind
+
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
 curl -Lo mongodb.tgz http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-${MONGO_VERSION}.tgz
 tar -xvf mongodb.tgz
-sudo service mongodb stop || true # stop the mongodb service if it's running so we can bind
 /tmp/mongodb/mongodb-linux-x86_64-${MONGO_VERSION}/bin/mongod --dbpath /tmp/mongodb/data --bind_ip 127.0.0.1 --auth > /dev/null 2>&1 &
 
 # appears mongodb killed this key on 2016/05/23
