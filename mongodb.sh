@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-sudo systemd list-unit-files
+sudo killall mongod || true
 
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
