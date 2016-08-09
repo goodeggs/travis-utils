@@ -1,8 +1,7 @@
 #!/bin/sh
 set -ex
 
-sudo docker ps # debug
-sudo ps axuw | grep mongo # debug
+sudo ls /etc/init.d/*
 
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
