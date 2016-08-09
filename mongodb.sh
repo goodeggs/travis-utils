@@ -1,7 +1,8 @@
 #!/bin/sh
 set -ex
 
-sudo service mongodb stop || true # stop the mongodb service if it's running so we can bind
+sudo service --status-all # debug
+sudo service mongo stop || true # stop the mongodb service if it's running so we can bind
 
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
