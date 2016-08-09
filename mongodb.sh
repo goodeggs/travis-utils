@@ -1,7 +1,7 @@
 #!/bin/sh
 set -ex
 
-sudo ls /etc/init.d/*
+sudo systemd list-unit-files
 
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
