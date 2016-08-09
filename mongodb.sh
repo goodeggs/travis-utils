@@ -1,8 +1,8 @@
 #!/bin/sh
 set -ex
 
-sudo service --status-all # debug
-sudo service mongo stop || true # stop the mongodb service if it's running so we can bind
+sudo docker ps # debug
+sudo ps axuw | grep mongo # debug
 
 mkdir -p /tmp/mongodb/data
 cd /tmp/mongodb
