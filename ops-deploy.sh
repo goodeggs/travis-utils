@@ -30,7 +30,7 @@ elif [ -f ./Statsfile.js ]; then
 fi
 apply_statsfile() {
   if [ ! -z $is_babel ]; then args='--require=babel-register'; fi
-  APP_NAME=pick-api goodeggs-stats $args # FIXME
+  goodeggs-stats $args
   if [ ! -d ./.goodeggs-stats-state ]; then mkdir ./.goodeggs-stats-state; fi
   echo $statsfile_hash > ./.goodeggs-stats-state/md5_hash
 }
