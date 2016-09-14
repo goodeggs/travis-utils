@@ -8,7 +8,7 @@ retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 rm -f Procfile Dockerfile
 commit=$ECRU_COMMIT # TODO fall back to parsing from local git repo
 echo "module.exports = '$commit';" > ./version.js
-npm run predeploy
+SHA=$commit npm run predeploy
 
 # Deploy staging
 ranch deploy -f .ranch.staging.yaml
