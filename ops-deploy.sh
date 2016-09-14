@@ -2,7 +2,7 @@
 set -ex
 
 # travis_retry isn't available to sub-scripts
-retry () { for i in 1 2 3; do $@ && return || sleep 10; done; exit 1; }
+retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
 # Prepare for deploy
 rm -f Procfile Dockerfile
@@ -13,7 +13,8 @@ npm run predeploy
 # Deploy staging
 ranch deploy -f .ranch.staging.yaml
 ranch run -f .ranch.staging.yaml -- npm run postdeploy
-retry 'SMOKE_TEST_ENV=staging npm run test:smoke'
+smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
+retry smoke_test
 
 # Deploy production
 ranch deploy
