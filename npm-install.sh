@@ -5,7 +5,7 @@ set -ex
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
 # install npm v3
-retry npm install -g npm@3.7.1
+retry npm install -g npm@3.9.1
 npm -v
 
 npm prune
