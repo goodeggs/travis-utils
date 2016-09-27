@@ -23,10 +23,10 @@ ranch run npm run postdeploy
 # Apply changes to Statsfile, if any.
 if [ -f ./Statsfile.coffee ]; then
   is_babel=
-  statsfile_hash=$(coffee -e 'console.log(JSON.stringify(require("./Statsfile.coffee")))' | md5sum)
+  statsfile_hash=$(coffee -e 'console.log(JSON.stringify(require("./Statsfile.coffee")))' | md5sum | cut -d ' ' -f 1)
 elif [ -f ./Statsfile.js ]; then
   is_babel=1
-  statsfile_hash=$(babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | md5sum)
+  statsfile_hash=$(babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | md5sum | cut -d ' ' -f 1)
 fi
 apply_statsfile() {
   if [ ! -z $is_babel ]; then args='--require=babel-register'; fi
