@@ -16,6 +16,12 @@ ranch run -f .ranch.staging.yaml -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
+
+## DISABLE PRODUCTION DEPLOYS ###
+exit 0
+## DISABLE PRODUCTION DEPLOYS ###
+
+
 # Deploy production
 ranch deploy
 ranch run npm run postdeploy
