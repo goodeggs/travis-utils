@@ -1,6 +1,9 @@
 #!/bin/sh
 set -ex
 
+# install ranch CLI
+curl -Ls https://github.com/goodeggs/platform/releases/download/v6.3.0/ranch_6.3.0_linux_amd64.tar.gz | ( cd /usr/local/bin && tar xz --strip 1 )
+
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
