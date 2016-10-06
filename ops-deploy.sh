@@ -2,7 +2,7 @@
 set -ex
 
 # install ranch CLI
-curl -Ls https://github.com/goodeggs/platform/releases/download/v6.3.0/ranch_6.3.0_linux_amd64.tar.gz | ( cd /usr/local/bin && tar xz --strip 1 )
+curl -Ls https://github.com/goodeggs/platform/releases/download/v6.3.0/ranch_6.3.0_linux_amd64.tar.gz | ( cd /tmp && tar xz --strip 1 )
 
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
@@ -14,8 +14,8 @@ SHA=$commit npm run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
 # Deploy staging
-ranch deploy -f .ranch.staging.yaml
-ranch run -f .ranch.staging.yaml -- npm run postdeploy
+/tmp/ranch deploy -f .ranch.staging.yaml
+/tmp/ranch run -f .ranch.staging.yaml -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
