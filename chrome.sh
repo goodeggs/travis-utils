@@ -19,16 +19,5 @@ if ! sudo dpkg --install $CHROME; then
   sudo apt-get -y --fix-broken install
 fi
 
-# versions like "stable" install in /opt/google/chrome, whereas "beta" installs in /opt/google/chrome-beta
-if [ -f /opt/google/chrome/chrome-sandbox ]; then
-  CHROME_SANDBOX=/opt/google/chrome/chrome-sandbox
-else
-	CHROME_SANDBOX=$(ls -d /opt/google/chrome*/chrome-sandbox)
-fi
-
-# Download a custom chrome-sandbox which works inside OpenVC containers (used on travis).
-curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
-sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
-
 export DISPLAY=:99.0
 sh /etc/init.d/xvfb start || true # might already be started
