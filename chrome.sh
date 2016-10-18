@@ -23,7 +23,7 @@ fi
 if [ -f /opt/google/chrome/chrome-sandbox ]; then
   CHROME_SANDBOX=/opt/google/chrome/chrome-sandbox
 else
-	CHROME_SANDBOX=$(ls -d /opt/google/chrome*/chrome-sandbox)
+  CHROME_SANDBOX=$(ls -d /opt/google/chrome*/chrome-sandbox)
 fi
 
 # Download a custom chrome-sandbox which works inside OpenVZ containers (used on travis).
