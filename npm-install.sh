@@ -1,11 +1,9 @@
-#!/bin/sh
-set -ex
+#!/bin/bash -euxo pipefail
 
 # travis_retry isn't available to sub-scripts
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
-# install npm v2
-[ `npm -v | awk -F '.' '{print $1}'` -ge 2 ] || retry npm install -g npm@2.13.4
+retry npm install -g npm@${NPM_VERSION:-2.13.4}
 
 npm prune
 npm cache clean
@@ -18,4 +16,3 @@ fi
 retry npm install
 
 echo `node -v` > ./node_modules/.node-version
-
