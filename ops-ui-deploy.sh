@@ -1,6 +1,7 @@
 #!/bin/sh
 set -ex
 
+# Assert required env variables are defined
 : "${ECRU_COMMIT:?must be set}"
 : "${S3_STAGING_BUCKET:?must be set}"
 : "${S3_PRODUCTION_BUCKET:?must be set}"
@@ -21,6 +22,13 @@ echo "module.exports = '$commit';" > ./version.js
 SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=staging npm run predeploy
 deploy_to_s3 $S3_STAGING_BUCKET
 npm run postdeploy
+
+# Abort if not deploying to production
+if ! $DEPLOY_PRODUCTION
+then
+  echo 'STOPPING AT STAGING. Toggle `env.DEPLOY_PRODUCTION` to go all the way.'
+  exit 0
+fi
 
 # Smoke tests
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
