@@ -5,6 +5,7 @@ set -ex
 : "${ECRU_COMMIT:?must be set}"
 : "${S3_STAGING_BUCKET:?must be set}"
 : "${S3_PRODUCTION_BUCKET:?must be set}"
+: "${AWS_DEFAULT_REGION:?must be set}"
 : "${AWS_ACCESS_KEY_ID:?must be set}"
 : "${AWS_SECRET_ACCESS_KEY:?must be set}"
 
