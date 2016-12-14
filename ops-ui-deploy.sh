@@ -25,7 +25,7 @@ deploy_to_s3 $S3_STAGING_BUCKET
 npm run postdeploy
 
 # Abort if not deploying to production
-if [[ $DEPLOY_PRODUCTION != 1 ]]
+if [ "$DEPLOY_PRODUCTION" != 1 ]
 then
   echo 'STOPPING AT STAGING. Toggle `env.DEPLOY_PRODUCTION` to go all the way.'
   exit 0
