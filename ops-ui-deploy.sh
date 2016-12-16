@@ -22,7 +22,7 @@ echo "module.exports = '$commit';" > ./version.js
 # Deploy to staging
 SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=staging npm run predeploy
 deploy_to_s3 $S3_STAGING_BUCKET
-npm run postdeploy
+FASTLY_SERVICE=$STAGING_FASTLY_SERVICE npm run postdeploy
 
 # Abort if not deploying to production
 if [ "$DEPLOY_PRODUCTION" != 1 ]
@@ -39,4 +39,4 @@ retry smoke_test
 # Deploy to production
 SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=production npm run predeploy
 deploy_to_s3 $S3_PRODUCTION_BUCKET
-npm run postdeploy
+FASTLY_SERVICE=$PRODUCTION_FASTLY_SERVICE npm run postdeploy
