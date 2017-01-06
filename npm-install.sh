@@ -1,18 +1,22 @@
-#!/bin/bash -euxo pipefail
+#!/bin/bash
+set -e
+set -o pipefail
+set -x
 
-# travis_retry isn't available to sub-scripts
-retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
+# retry 3 times with 10s wait
+retry () { for _ in 1 2 3; do "$@" && return 0; sleep 10; done; return 1; }
 
-retry npm install -g npm@${NPM_VERSION:-2.13.4}
+# install npm 3.9 or whatever
+retry npm install -g "npm@${NPM_VERSION:-3.9}"
 
 npm prune
 npm cache clean
 
-if test -f ./node_modules/.node-version && [ $(cat ./node_modules/.node-version) != `node -v` ]; then
+if test -f ./node_modules/.node-version && [ "$(cat ./node_modules/.node-version)" != "$(node -v)" ]; then
   echo "Node version changed since last build; rebuilding dependencies"
   npm rebuild
 fi
 
 retry npm install
 
-echo `node -v` > ./node_modules/.node-version
+node -v > ./node_modules/.node-version
