@@ -17,8 +17,8 @@ smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
 # Deploy production
-ranch deploy
-ranch run npm run postdeploy
+ranch deploy -f .ranch.yaml
+ranch run -f .ranch.yaml -- npm run postdeploy
 
 # Apply changes to Statsfile, if any.
 if [ -f ./Statsfile.coffee ]; then
