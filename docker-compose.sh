@@ -10,7 +10,7 @@ fi
 start=$(date "+%s")
 
 caching=$(grep -m1 -ao '[0-1]' /dev/urandom | head -n1)
-if [ "$caching" == "0" ]; then
+if [ "$caching" = "0" ]; then
   echo "skipping docker-compose-cacher"
 else
   echo "using docker-compose-cacher"
