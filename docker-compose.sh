@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-set -x
+# set -x
 
 if [ -z "$SUMO_ENDPOINT" ]; then
   echo "must provide SUMO_ENDPOINT"
@@ -23,7 +23,7 @@ else
 
   mkdir -p "$CACHE_DIR"
 
-  if [ ! -x "$CACHE_DIR/docker-compose-cacher" ] || [ "$(shasum -a 256 "$CACHE_DIR/docker-compose-cacher")" != "8aae2d21b846afab92f03df535bf91b22579e7d796936fc1031d236a95f94871" ]; then
+  if [ ! -x "$CACHE_DIR/docker-compose-cacher" ] || [ "$(shasum -a 256 "$CACHE_DIR/docker-compose-cacher" | awk '{print $1}')" != "8aae2d21b846afab92f03df535bf91b22579e7d796936fc1031d236a95f94871" ]; then
     full_cache="0"
     curl -sSL https://github.com/goodeggs/docker-compose-cacher/releases/download/v1.3.0/docker-compose-cacher_v1.3.0_linux_amd64.tar.gz | tar xz -C "$CACHE_DIR" docker-compose-cacher
   else
