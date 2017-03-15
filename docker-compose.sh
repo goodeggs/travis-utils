@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-# set -x
+set -x
 
 if [ -z "$SUMO_ENDPOINT" ]; then
   echo "must provide SUMO_ENDPOINT"
