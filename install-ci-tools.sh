@@ -67,6 +67,14 @@ for arg in "$@"; do
         unzip -qqo tmp.zip chromedriver
         rm -rf tmp.zip
       fi
+      cat > start-chromedriver <<EOF
+#!/bin/sh
+set -e
+export DISPLAY=:99.0
+sh /etc/init.d/xvfb start || true
+chromedriver "\$@" &
+EOF
+      chmod +x start-chromedriver
       ;;
     yarn)
       if [ ! -x yarn ] || [ "$(./yarn -V)" != "$version" ]; then
