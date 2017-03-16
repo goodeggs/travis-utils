@@ -44,3 +44,5 @@ if [ "$?" -eq 124 ]; then
   exit 1
 fi
 
+echo "docker-compose is up"
+
