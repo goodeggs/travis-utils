@@ -37,6 +37,8 @@ blessed_version () {
       echo 3.9.6 ;;
     phantomjs)
       echo 1.9.8 ;;
+    sumotime)
+      echo 1.0.0 ;;
   esac
 }
 
@@ -104,6 +106,13 @@ EOF
         mkdir -p .phantomjs
         curl -sSL "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${version}-linux-x86_64.tar.bz2?t=$(date '+%s')" | tar xj -C .phantomjs --strip 1
         ln -s "$PWD/.phantomjs/bin/phantomjs"
+      fi
+      ;;
+    sumotime)
+      if [ ! -x sumotime ] || [ "$(./sumotime -v)" != "$version" ]; then
+        rm -rf sumotime
+        curl -sSL "https://github.com/goodeggs/sumotime/releases/download/v${version}/sumotime-Linux-x86_64" > sumotime
+        chmod +x sumotime
       fi
       ;;
     *)
