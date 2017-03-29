@@ -92,6 +92,26 @@ EOF
       if [ "$(npm -v)" != "$version" ]; then
         npm install -g --progress=false "npm@$version" 1>/dev/null
       fi
+      cat > better-npm-install <<EOF
+#!/bin/sh
+set -e
+
+# retry 3 times with 10s wait
+retry () { for _ in 1 2 3; do "\$@" && return 0; sleep 10; done; return 1; }
+
+npm prune
+npm cache clean
+
+if test -f ./node_modules/.node-version && [ "\$(cat ./node_modules/.node-version)" != "\$(node -v)" ]; then
+  echo "Node version changed since last build; rebuilding dependencies"
+  npm rebuild
+fi
+
+retry npm install
+
+node -v > ./node_modules/.node-version
+EOF
+      chmod +x better-npm-install
       ;;
     phantomjs)
       if [ ! -x phantomjs ] || [ "$(phantomjs -v)" != "$version" ]; then
