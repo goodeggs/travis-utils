@@ -25,8 +25,6 @@ blessed_version () {
   case $tool in
     docker-compose)
       echo 1.11.2 ;;
-    docker-compose-cacher)
-      echo 1.3.0 ;;
     chromedriver)
       echo 2.27 ;;
     yarn)
@@ -56,11 +54,6 @@ for arg in "$@"; do
       if [ ! -x docker-compose ] || ./docker-compose -v | egrep -qv "\\b${version}\\b"; then
         curl -sSL "https://github.com/docker/compose/releases/download/${version}/docker-compose-Linux-x86_64" > docker-compose
         chmod +x docker-compose
-      fi
-      ;;
-    docker-compose-cacher)
-      if ! sha_matches docker-compose-cacher "8aae2d21b846afab92f03df535bf91b22579e7d796936fc1031d236a95f94871"; then
-        curl -sSL "https://github.com/goodeggs/docker-compose-cacher/releases/download/v${version}/docker-compose-cacher_v${version}_linux_amd64.tar.gz" | tar xz docker-compose-cacher
       fi
       ;;
     chromedriver)
