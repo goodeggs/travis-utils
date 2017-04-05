@@ -128,6 +128,26 @@ EOF
         chmod +x sumotime
       fi
       ;;
+    git-crypt)
+      if ! which -s git-crypt; then
+        sudo apt-get update
+        sudo apt-get -y install git-crypt
+      fi
+      cat > git-crypt-unlock <<EOF
+#!/bin/sh
+set -e
+[ -z "\$GITCRYPT_PASS" ] && ( echo "please set GITCRYPT_PASS" ; exit 1 )
+[ -f .git-crypt.key.enc ] || ( echo ".git-crypt.key.enc not found or not readable" ; exit 1 )
+
+keyfile=\$(mktemp)
+openssl aes-256-cbc -k "\$GITCRYPT_PASS" -in .git-crypt.key.enc -out "\$keyfile" -d
+git-crypt unlock "\$keyfile"
+rm "\$keyfile"
+
+echo "git-crypt unlocked!"
+EOF
+      chmod +x git-crypt-unlock
+      ;;
     *)
       echo "ERROR: unknown tool"
       exit 1
