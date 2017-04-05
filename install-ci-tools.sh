@@ -129,7 +129,7 @@ EOF
       fi
       ;;
     git-crypt)
-      if ! which -s git-crypt; then
+      if ! which git-crypt > /dev/null; then
         sudo apt-get update
         sudo apt-get -y install git-crypt
       fi
