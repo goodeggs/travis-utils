@@ -37,6 +37,8 @@ blessed_version () {
       echo 1.9.8 ;;
     sumotime)
       echo 1.0.0 ;;
+    git-crypt)
+      echo 0.5.0 ;;
   esac
 }
 
@@ -127,6 +129,34 @@ EOF
         curl -sSL "https://github.com/goodeggs/sumotime/releases/download/v${version}/sumotime-Linux-x86_64" > sumotime
         chmod +x sumotime
       fi
+      ;;
+    git-crypt)
+      if [ ! -x git-crypt ] || git-crypt --version | egrep -qv "\\b${version}\\b"; then
+        # we'll assume this is already installed?
+        #sudo apt-get install -y libssl-dev
+        tmpdir=$(mktemp -d)
+        (
+          set -e
+          cd "$tmpdir"
+          curl -ssL "https://github.com/AGWA/git-crypt/archive/${version}.tar.gz" | tar xz --strip 1
+          make
+        )
+        cp -p "$tmpdir/git-crypt" .
+      fi
+      cat > git-crypt-unlock <<EOF
+#!/bin/sh
+set -e
+[ -z "\$GITCRYPT_PASS" ] && ( echo "please set GITCRYPT_PASS" ; exit 1 )
+[ -f .git-crypt.key.enc ] || ( echo ".git-crypt.key.enc not found or not readable" ; exit 1 )
+
+keyfile=\$(mktemp)
+openssl aes-256-cbc -k "\$GITCRYPT_PASS" -in .git-crypt.key.enc -out "\$keyfile" -d
+git-crypt unlock "\$keyfile"
+rm "\$keyfile"
+
+echo "git-crypt unlocked!"
+EOF
+      chmod +x git-crypt-unlock
       ;;
     *)
       echo "ERROR: unknown tool"
