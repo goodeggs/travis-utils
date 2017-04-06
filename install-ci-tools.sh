@@ -37,6 +37,8 @@ blessed_version () {
       echo 1.9.8 ;;
     sumotime)
       echo 1.0.0 ;;
+    git-crypt)
+      echo 0.5.0 ;;
   esac
 }
 
@@ -129,14 +131,14 @@ EOF
       fi
       ;;
     git-crypt)
-      if [ ! -x git-crypt ]; then
+      if [ ! -x git-crypt ] || git-crypt --version | egrep -qv "\\b${version}\\b"; then
         # we'll assume this is already installed?
         #sudo apt-get install -y libssl-dev
         tmpdir=$(mktemp -d)
         (
           set -e
           cd "$tmpdir"
-          curl -ssL https://github.com/AGWA/git-crypt/archive/master.tar.gz | tar xzf --strip 1
+          curl -ssL "https://github.com/AGWA/git-crypt/archive/${version}.tar.gz" | tar xz --strip 1
           make
         )
         cp -p "$tmpdir/git-crypt" .
