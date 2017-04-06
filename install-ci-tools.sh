@@ -129,9 +129,17 @@ EOF
       fi
       ;;
     git-crypt)
-      if ! which git-crypt > /dev/null; then
-        sudo apt-get update
-        sudo apt-get -y install git-crypt
+      if [ ! -x git-crypt ]; then
+        # we'll assume this is already installed?
+        #sudo apt-get install -y libssl-dev
+        tmpdir=$(mktemp -d)
+        (
+          set -e
+          cd "$tmpdir"
+          curl -ssL https://github.com/AGWA/git-crypt/archive/master.tar.gz | tar xzf --strip 1
+          make
+        )
+        cp -p "$tmpdir/git-crypt" .
       fi
       cat > git-crypt-unlock <<EOF
 #!/bin/sh
