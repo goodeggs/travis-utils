@@ -39,6 +39,8 @@ blessed_version () {
       echo 1.0.0 ;;
     git-crypt)
       echo 0.5.0 ;;
+    ranch)
+      echo 7.2.0 ;;
   esac
 }
 
@@ -157,6 +159,13 @@ rm "\$keyfile"
 echo "git-crypt unlocked!"
 EOF
       chmod +x git-crypt-unlock
+      ;;
+    ranch)
+      if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
+        rm -f ranch
+        curl -sSL "https://github.com/goodeggs/platform/releases/download/v${version}/ranch-Linux-x86_64" > ranch
+        chmod +x ranch
+      fi
       ;;
     *)
       echo "ERROR: unknown tool"
