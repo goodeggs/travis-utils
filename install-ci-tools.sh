@@ -40,7 +40,7 @@ blessed_version () {
     git-crypt)
       echo 0.5.0 ;;
     ranch)
-      echo 7.2.0 ;;
+      echo 7.3.0 ;;
   esac
 }
 
