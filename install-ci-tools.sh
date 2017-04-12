@@ -36,7 +36,7 @@ blessed_version () {
     phantomjs)
       echo 1.9.8 ;;
     sumotime)
-      echo 1.0.0 ;;
+      echo 1.0.1 ;;
     git-crypt)
       echo 0.5.0 ;;
     ranch)
