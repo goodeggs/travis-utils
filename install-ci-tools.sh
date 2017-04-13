@@ -42,7 +42,7 @@ blessed_version () {
     ranch)
       echo 7.3.0 ;;
     pivotal-deliver)
-      echo 1.0.0 ;;
+      echo 2.0.0 ;;
   esac
 }
 
