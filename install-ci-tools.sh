@@ -175,6 +175,12 @@ EOF
         curl -sSL "https://github.com/goodeggs/pivotal-deliver/releases/download/v${version}/pivotal-deliver-Linux-x86_64" > pivotal-deliver
         chmod +x pivotal-deliver
       fi
+      cat > deliver-pivotal-stories <<EOF
+#!/bin/sh
+set -e
+git log --format=full "\$ECRU_LIVE_COMMIT..\$ECRU_COMMIT" | pivotal-deliver
+EOF
+      chmod +x deliver-pivotal-stories
       ;;
     *)
       echo "ERROR: unknown tool"
