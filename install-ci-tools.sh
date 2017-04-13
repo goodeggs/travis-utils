@@ -41,6 +41,8 @@ blessed_version () {
       echo 0.5.0 ;;
     ranch)
       echo 7.3.0 ;;
+    pivotal-deliver)
+      echo 2.0.0 ;;
   esac
 }
 
@@ -166,6 +168,19 @@ EOF
         curl -sSL "https://github.com/goodeggs/platform/releases/download/v${version}/ranch-Linux-x86_64" > ranch
         chmod +x ranch
       fi
+      ;;
+    pivotal-deliver)
+      if [ ! -x pivotal-deliver ] || [ "$(./pivotal-deliver -v)" != "$version" ]; then
+        rm -f pivotal-deliver
+        curl -sSL "https://github.com/goodeggs/pivotal-deliver/releases/download/v${version}/pivotal-deliver-Linux-x86_64" > pivotal-deliver
+        chmod +x pivotal-deliver
+      fi
+      cat > deliver-pivotal-stories <<EOF
+#!/bin/sh
+set -e
+git log --format=full "\$ECRU_LIVE_COMMIT..\$ECRU_COMMIT" | pivotal-deliver
+EOF
+      chmod +x deliver-pivotal-stories
       ;;
     *)
       echo "ERROR: unknown tool"
