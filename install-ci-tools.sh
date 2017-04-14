@@ -2,6 +2,18 @@
 set -e
 #set -x
 
+platform=$(uname -s)
+arch=$(uname -m)
+
+bad_platform () {
+  echo "unhandled plaform/arch ${platform}-${arch}"
+  exit 1
+}
+
+downcase () {
+  echo "$*" | tr '[:upper:]' '[:lower:]'
+}
+
 sha_matches () {
   tool="$1"
   expected_sha="$2"
@@ -58,13 +70,19 @@ for arg in "$@"; do
   case "$tool" in
     docker-compose)
       if [ ! -x docker-compose ] || ./docker-compose -v | egrep -qv "\\b${version}\\b"; then
-        curl -sSL "https://github.com/docker/compose/releases/download/${version}/docker-compose-Linux-x86_64" > docker-compose
+        curl -sSL "https://github.com/docker/compose/releases/download/${version}/docker-compose-${platform}-${arch}" > docker-compose
         chmod +x docker-compose
       fi
       ;;
     chromedriver)
       if [ ! -x chromedriver ] || ./chromedriver -v | egrep -qv "\\b${version}\\b"; then
-        curl -sSLo tmp.zip "http://chromedriver.storage.googleapis.com/${version}/chromedriver_linux64.zip"
+        case "$platform-$arch" in
+          Linux-x86_64) filename="chromedriver_linux64.zip" ;;
+          Linux-i686) filename="chromedriver_linux32.zip" ;;
+          Darwin-x86_64) filename="chromedriver_mac64.zip" ;;
+          *) bad_platform ;;
+        esac
+        curl -sSLo tmp.zip "http://chromedriver.storage.googleapis.com/${version}/${filename}"
         unzip -qqo tmp.zip chromedriver
         rm -rf tmp.zip
       fi
@@ -87,9 +105,15 @@ EOF
       ;;
     node)
       if [ ! -x node ] || [ "$(./node -v)" != "v${version}" ]; then
+        case "$platform-$arch" in
+          Linux-x86_64) filename="node-v${version}-linux-x64.tar.xz" format="J" ;;
+          Linux-i686) filename="node-v${version}-linux-x32.tar.xz" format="J" ;;
+          Darwin-x86_64) filename="node-v${version}-darwin-x64.tar.gz" format="z" ;;
+          *) bad_platform ;;
+        esac
         rm -rf node npm .node
         mkdir -p .node
-        curl -sSL "https://nodejs.org/dist/v${version}/node-v${version}-linux-x64.tar.xz" | tar xJ -C .node --strip 1
+        curl -sSL "https://nodejs.org/dist/v${version}/${filename}" | tar "x$format" -C .node --strip 1
         ln -s "$PWD/.node/bin/node"
         ln -s "$PWD/.node/bin/npm"
       fi
@@ -120,22 +144,35 @@ EOF
       chmod +x better-npm-install
       ;;
     phantomjs)
-      if [ ! -x phantomjs ] || [ "$(phantomjs -v)" != "$version" ]; then
+      if [ ! -x phantomjs ] || [ "$(./phantomjs -v)" != "$version" ]; then
         rm -rf phantomjs .phantomjs
         mkdir -p .phantomjs
-        curl -sSL "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${version}-linux-x86_64.tar.bz2?t=$(date '+%s')" | tar xj -C .phantomjs --strip 1
+        case "$platform" in
+          Linux)
+            curl -sSL "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${version}-linux-${arch}.tar.bz2?t=$(date '+%s')" | tar xj -C .phantomjs --strip 1
+            ;;
+          Darwin)
+            tmpfile=$(mktemp)
+            curl -sSL -o "$tmpfile" "https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-${version}-macosx.zip?t=$(date '+%s')"
+            dest=".phantomjs/bin/phantomjs"
+            mkdir -p "$(dirname "$dest")"
+            unzip -p "$tmpfile" "phantomjs-${version}-macosx/bin/phantomjs" > "$dest"
+            chmod +x "$dest"
+            ;;
+          *) bad_platform ;;
+        esac
         ln -s "$PWD/.phantomjs/bin/phantomjs"
       fi
       ;;
     sumotime)
       if [ ! -x sumotime ] || [ "$(./sumotime -v)" != "$version" ]; then
         rm -rf sumotime
-        curl -sSL "https://github.com/goodeggs/sumotime/releases/download/v${version}/sumotime-Linux-x86_64" > sumotime
+        curl -sSL "https://github.com/goodeggs/sumotime/releases/download/v${version}/sumotime-${platform}-${arch}" > sumotime
         chmod +x sumotime
       fi
       ;;
     git-crypt)
-      if [ ! -x git-crypt ] || git-crypt --version | egrep -qv "\\b${version}\\b"; then
+      if [ ! -x git-crypt ] || ./git-crypt --version | egrep -qv "\\b${version}\\b"; then
         # we'll assume this is already installed?
         #sudo apt-get install -y libssl-dev
         tmpdir=$(mktemp -d)
@@ -165,14 +202,14 @@ EOF
     ranch)
       if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
         rm -f ranch
-        curl -sSL "https://github.com/goodeggs/platform/releases/download/v${version}/ranch-Linux-x86_64" > ranch
+        curl -sSL "https://github.com/goodeggs/platform/releases/download/v${version}/ranch-${platform}-${arch}" > ranch
         chmod +x ranch
       fi
       ;;
     pivotal-deliver)
       if [ ! -x pivotal-deliver ] || [ "$(./pivotal-deliver -v)" != "$version" ]; then
         rm -f pivotal-deliver
-        curl -sSL "https://github.com/goodeggs/pivotal-deliver/releases/download/v${version}/pivotal-deliver-Linux-x86_64" > pivotal-deliver
+        curl -sSL "https://github.com/goodeggs/pivotal-deliver/releases/download/v${version}/pivotal-deliver-${platform}-${arch}" > pivotal-deliver
         chmod +x pivotal-deliver
       fi
       cat > deliver-pivotal-stories <<EOF
