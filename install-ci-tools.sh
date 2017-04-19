@@ -84,6 +84,8 @@ EOF
         curl -sSL "https://github.com/yarnpkg/yarn/releases/download/v${version}/yarn-v${version}.tar.gz" | tar xz -C .yarn --strip 1
         ln -s "$PWD/.yarn/bin/yarn"
       fi
+      # put the yarn cache outside of $CACHE_DIR
+      ./yarn config set cache-folder /tmp/yarn-cache
       ;;
     node)
       if [ ! -x node ] || [ "$(./node -v)" != "v${version}" ]; then
