@@ -113,7 +113,7 @@ if test -f ./node_modules/.node-version && [ "\$(cat ./node_modules/.node-versio
   npm rebuild
 fi
 
-retry npm --unsafe-perm install
+retry npm install --unsafe-perm
 
 node -v > ./node_modules/.node-version
 EOF
