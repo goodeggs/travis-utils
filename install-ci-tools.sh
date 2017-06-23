@@ -163,6 +163,15 @@ rm "\$keyfile"
 echo "git-crypt unlocked!"
 EOF
       chmod +x git-crypt-unlock
+      cat > envfile <<EOF
+#!/usr/bin/env bash
+while read -r line; do
+  k=\$(sed 's/=.*$//' <<<"\$line")
+  v=\$(sed -E 's/^[^=]+=//' <<<"\$line")
+  echo "export \$k='\$(sed "s/'/'\\"'\\"'/g" <<<"\$v")'"
+done < <(grep -E -v '^\\s*(#|$)' "\$1")
+EOF
+      chmod +x envfile
       ;;
     ranch)
       if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
