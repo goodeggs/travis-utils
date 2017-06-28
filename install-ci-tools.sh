@@ -167,7 +167,11 @@ EOF
 #!/usr/bin/env bash
 while read -r line; do
   k=\$(sed 's/=.*$//' <<<"\$line")
-  v=\$(sed -E 's/^[^=]+=//' <<<"\$line")
+  if grep -q '=' <<< "\$line"; then
+    v=\$(sed -E 's/^[^=]+=//' <<<"\$line")
+  else
+    eval "v=\\"\\$\$k\\""
+  fi
   echo "export \$k='\$(sed "s/'/'\\"'\\"'/g" <<<"\$v")'"
 done < <(grep -E -v '^\\s*(#|$)' "\$1")
 EOF
