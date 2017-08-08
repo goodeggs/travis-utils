@@ -43,6 +43,8 @@ blessed_version () {
       echo 9.0.0 ;;
     pivotal-deliver)
       echo 2.0.0 ;;
+    packer)
+      echo 1.0.3 ;;
   esac
 }
 
@@ -196,6 +198,13 @@ set -e
 git log --format=full "\$ECRU_LIVE_COMMIT..\$ECRU_COMMIT" | pivotal-deliver
 EOF
       chmod +x deliver-pivotal-stories
+      ;;
+    packer)
+      if [ ! -x packer ] || ./packer -v | egrep -qv "\\b${version}\\b"; then
+        curl -sSLo tmp.zip "https://releases.hashicorp.com/packer/${version}/packer_${version}_linux_amd64.zip"
+        unzip -qqo tmp.zip packer
+        rm -rf tmp.zip
+      fi
       ;;
     *)
       echo "ERROR: unknown tool"
