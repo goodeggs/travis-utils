@@ -88,6 +88,8 @@ EOF
       fi
       # put the yarn cache outside of $CACHE_DIR
       ./yarn config set cache-folder /tmp/yarn-cache
+      # workaround for https://github.com/yarnpkg/yarn/issues/2429
+      ./yarn config set child-concurrency 1
       ;;
     node)
       if [ ! -x node ] || [ "$(./node -v)" != "v${version}" ]; then
