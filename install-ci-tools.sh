@@ -34,7 +34,7 @@ blessed_version () {
     npm)
       echo 3.9.6 ;;
     phantomjs)
-      echo 1.9.8 ;;
+      echo 2.1.1 ;;
     sumotime)
       echo 1.0.1 ;;
     git-crypt)
