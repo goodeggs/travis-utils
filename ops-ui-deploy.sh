@@ -11,8 +11,8 @@ set -ex
 
 deploy_to_s3 () {
   bucket=$1
-  aws s3 cp --acl public-read build s3://${bucket}/ --recursive --exclude "index.html"
-  aws s3 cp --acl public-read build/index.html s3://${bucket}/
+  aws s3 cp --acl public-read --cache-control public,max-age=31536000 build s3://${bucket}/ --recursive --exclude "index.html"
+  aws s3 cp --acl public-read --cache-control public,max-age=31536000 build/index.html s3://${bucket}/
 }
 
 # Write version.js
