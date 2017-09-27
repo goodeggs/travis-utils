@@ -22,13 +22,13 @@ ranch run -f .ranch.yaml -- npm run postdeploy
 # Apply changes to Statsfile, if any.
 if [ -f ./Statsfile.coffee ]; then
   is_babel=
-  statsfile_hash=$(coffee -e 'console.log(JSON.stringify(require("./Statsfile.coffee")))' | tail -1 md5sum | cut -d ' ' -f 1)
+  statsfile_hash=$(coffee -e 'console.log(JSON.stringify(require("./Statsfile.coffee")))' | tail -1 | md5sum | cut -d ' ' -f 1)
 elif [ -f ./Statsfile.js ]; then
   is_babel=1
   # NOTE: importing Statsfile may import some app modules and log things, so we hash only on the last logged line
   # For example, apps are known to log "STATUS_API_TOKEN required, but not set. Configuring goodeggs-status in simulate mode"
   # within a full JSON log line with a timestamp - which makes this hashing nondeterministic. :(
-  statsfile_hash=$(babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | tail -1 md5sum | cut -d ' ' -f 1)
+  statsfile_hash=$(babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | tail -1 | md5sum | cut -d ' ' -f 1)
 fi
 apply_statsfile() {
   if [ ! -z $is_babel ]; then args='--require=babel-register'; fi
