@@ -25,11 +25,11 @@ if [ -f ./Statsfile.coffee ]; then
   statsfile_hash=$(coffee -e 'console.log(JSON.stringify(require("./Statsfile.coffee")))' | md5sum | cut -d ' ' -f 1)
 elif [ -f ./Statsfile.js ]; then
   is_babel=1
-  echo "Phil is debugging issues with Statsfile has caching"
+  echo "Phil is debugging issues with Statsfile hash caching"
   echo "The whole Statsfile:"
   babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))'
   echo "Its md5 sum:"
-  babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | md5sum | echo
+  babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | md5sum
   statsfile_hash=$(babel-node -e 'console.log(JSON.stringify(require("./Statsfile.js")))' | md5sum | cut -d ' ' -f 1)
 fi
 apply_statsfile() {
