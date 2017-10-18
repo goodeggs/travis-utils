@@ -23,12 +23,19 @@ fi
 if [ -f /opt/google/chrome/chrome-sandbox ]; then
   CHROME_SANDBOX=/opt/google/chrome/chrome-sandbox
 else
-	CHROME_SANDBOX=$(ls -d /opt/google/chrome*/chrome-sandbox)
+  CHROME_SANDBOX=$(ls -d /opt/google/chrome*/chrome-sandbox)
 fi
 
-# Download a custom chrome-sandbox which works inside OpenVC containers (used on travis).
-curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
-sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
+if [ "$TRAVIS" != "" ]; then
+  # Download a custom chrome-sandbox which works inside OpenVC containers (used on travis).
+  curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
+  sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
+else
+  # we're on Ecru
+  sudo apt-get -y install xvfb
+  curl -Lo xvfb https://raw.githubusercontent.com/travis-ci/travis-cookbooks/735dbfbb4c9017551df09de8bb752591a2e6e904/cookbooks/travis_build_environment/files/default/etc-init.d-xvfb.sh
+  sudo install -m 0755 xvfb /etc/init.d/xvfb
+fi
 
-export DISPLAY=:99.0
+export DISPLAY=:99
 sh /etc/init.d/xvfb start || true # might already be started
