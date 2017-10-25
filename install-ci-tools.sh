@@ -2,6 +2,9 @@
 set -e
 #set -x
 
+# workaround docker pull stall issue on 2017-10-24
+echo "nameserver 8.8.8.8" | sudo dd of=/etc/resolv.conf
+
 sha_matches () {
   tool="$1"
   expected_sha="$2"
