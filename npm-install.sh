@@ -18,4 +18,4 @@ fi
 
 retry npm install
 
-echo `node -v` > ./node_modules/.node-version
+node -v > ./node_modules/.node-version
