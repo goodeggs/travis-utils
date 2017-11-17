@@ -9,15 +9,22 @@ commit=$ECRU_COMMIT # TODO fall back to parsing from local git repo
 SHA=$commit npm run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
+STAGING_RANCH_FILE='.ranch.staging.yaml'
+PRODUCTION_RANCH_FILE=`[[ -f '.ranch.production.yaml' ]] && echo '.ranch.production.yaml' || echo '.ranch.yaml'`
+
 # Deploy staging
-ranch deploy -f .ranch.staging.yaml
-ranch run -f .ranch.staging.yaml -- npm run postdeploy
+ranch deploy -f $STAGING_RANCH_FILE
+ranch run -f $STAGING_RANCH_FILE -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
-# Deploy production
-ranch deploy -f .ranch.yaml
-ranch run -f .ranch.yaml -- npm run postdeploy
+if [ -v DEPLOY_PRODUCTION ]; then
+  # Deploy production
+  ranch deploy -f $PRODUCTION_RANCH_FILE
+  ranch run -f $PRODUCTION_RANCH_FILE -- npm run postdeploy
+else
+  echo "DEPLOY_PRODUCTION env var is not set. Not deploying to production."
+fi
 
 # Apply changes to Statsfile, if any.
 if [ -f ./Statsfile.coffee ]; then
