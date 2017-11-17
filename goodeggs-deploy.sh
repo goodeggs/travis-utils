@@ -18,12 +18,12 @@ ranch run -f $STAGING_RANCH_FILE -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
-if [ -v DEPLOY_PRODUCTION ]; then
+if [ DEPLOY_PRODUCTION -eq 1 ]; then
   # Deploy production
   ranch deploy -f $PRODUCTION_RANCH_FILE
   ranch run -f $PRODUCTION_RANCH_FILE -- npm run postdeploy
 else
-  echo "DEPLOY_PRODUCTION env var is not set. Not deploying to production."
+  echo "DEPLOY_PRODUCTION env var is not set to 1. Not deploying to production."
 fi
 
 # Apply changes to Statsfile, if any.
