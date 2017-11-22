@@ -18,7 +18,7 @@ ranch run -f $STAGING_RANCH_FILE -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
-if [ DEPLOY_PRODUCTION -eq 1 ]; then
+if [ "$DEPLOY_PRODUCTION" -eq 1 ]; then
   # Deploy production
   ranch deploy -f $PRODUCTION_RANCH_FILE
   ranch run -f $PRODUCTION_RANCH_FILE -- npm run postdeploy
