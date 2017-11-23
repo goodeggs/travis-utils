@@ -10,7 +10,7 @@ SHA=$commit npm run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
 STAGING_RANCH_FILE='.ranch.staging.yaml'
-PRODUCTION_RANCH_FILE=`[[ -f '.ranch.production.yaml' ]] && echo '.ranch.production.yaml' || echo '.ranch.yaml'`
+PRODUCTION_RANCH_FILE=`[ -f '.ranch.production.yaml' ] && echo '.ranch.production.yaml' || echo '.ranch.yaml'`
 
 # Deploy staging
 ranch deploy -f $STAGING_RANCH_FILE
