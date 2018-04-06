@@ -224,9 +224,25 @@ EOF
         rm -rf go godoc gofmt .go
         mkdir -p .go
         curl -sSL "https://dl.google.com/go/go${version}.linux-amd64.tar.gz" | tar xz -C .go
-        ln -s "$PWD/.go/bin/go"
-        ln -s "$PWD/.go/bin/godoc"
-        ln -s "$PWD/.go/bin/gofmt"
+        cat > go <<EOF
+#!/bin/sh
+export GOROOT=$PWD/.go
+export PATH="\$GOROOT/bin:\$PATH"
+\$GOROOT/bin/go "\$@"
+EOF
+        cat > godoc <<EOF
+#!/bin/sh
+export GOROOT=$PWD/.go
+export PATH="\$GOROOT/bin:\$PATH"
+\$GOROOT/bin/godoc "\$@"
+EOF
+        cat > gofmt <<EOF
+#!/bin/sh
+export GOROOT=$PWD/.go
+export PATH="\$GOROOT/bin:\$PATH"
+\$GOROOT/bin/gofmt "\$@"
+EOF
+        chmod +x go godoc gofmt
         echo "$version" > ./.go/.version
       fi
       ;;
