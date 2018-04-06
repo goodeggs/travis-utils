@@ -223,7 +223,7 @@ EOF
       if [ ! -x go ] || [ "$(cat ./.go/.version)" != "${version}" ]; then
         rm -rf go godoc gofmt .go
         mkdir -p .go
-        curl -sSL "https://dl.google.com/go/go${version}.linux-amd64.tar.gz" | tar xz -C .go
+        curl -sSL "https://dl.google.com/go/go${version}.linux-amd64.tar.gz" | tar xz -C .go --strip 1
         cat > go <<EOF
 #!/bin/sh
 export GOROOT=$PWD/.go
