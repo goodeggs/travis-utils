@@ -47,6 +47,8 @@ blessed_version () {
       echo 1.0.3 ;;
     direnv)
       echo 2.15.2 ;;
+    go)
+      echo 1.10.1 ;;
   esac
 }
 
@@ -215,6 +217,17 @@ EOF
         rm -f direnv
         curl -sSL "https://github.com/direnv/direnv/releases/download/v${version}/direnv.linux-amd64" > direnv
         chmod +x direnv
+      fi
+      ;;
+    go)
+      if [ ! -x go ] || [ "$(cat ./.go/.version)" != "${version}" ]; then
+        rm -rf go godoc gofmt .go
+        mkdir -p .go
+        curl -sSL "https://dl.google.com/go/go${version}.linux-amd64.tar.gz" | tar xz -C .go
+        ln -s "$PWD/.go/bin/go"
+        ln -s "$PWD/.go/bin/godoc"
+        ln -s "$PWD/.go/bin/gofmt"
+        echo "$version" > ./.go/.version
       fi
       ;;
     *)
