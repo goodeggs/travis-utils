@@ -45,6 +45,8 @@ blessed_version () {
       echo 2.0.0 ;;
     packer)
       echo 1.0.3 ;;
+    direnv)
+      echo 2.15.2 ;;
   esac
 }
 
@@ -206,6 +208,13 @@ EOF
         curl -sSLo tmp.zip "https://releases.hashicorp.com/packer/${version}/packer_${version}_linux_amd64.zip"
         unzip -qqo tmp.zip packer
         rm -rf tmp.zip
+      fi
+      ;;
+    direnv)
+      if [ ! -x direnv ] || [ "$(./direnv version)" != "$version" ]; then
+        rm -f direnv
+        curl -sSL "https://github.com/direnv/direnv/releases/download/v${version}/direnv.linux-amd64" > direnv
+        chmod +x direnv
       fi
       ;;
     *)
