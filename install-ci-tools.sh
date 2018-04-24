@@ -55,6 +55,7 @@ blessed_version () {
 [ -z "$CACHE_DIR" ] && CACHE_DIR="/tmp/ci-tools"
 mkdir -p "$CACHE_DIR"
 cd "$CACHE_DIR" || exit 1
+PATH=${CACHE_DIR}:${PATH}
 
 for arg in "$@"; do
   split "$arg" '=@' tool version
