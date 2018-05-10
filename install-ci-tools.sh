@@ -146,7 +146,7 @@ EOF
       fi
       ;;
     git-crypt)
-      if [ ! -x git-crypt ] || git-crypt --version | egrep -qv "\\b${version}\\b"; then
+      if [ ! -x git-crypt ] || git-crypt --version 2>&1 | egrep -qv "\\b${version}\\b"; then
         # we'll assume this is already installed?
         #sudo apt-get install -y libssl-dev
         tmpdir=$(mktemp -d)
