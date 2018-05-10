@@ -38,7 +38,7 @@ blessed_version () {
     sumotime)
       echo 1.0.1 ;;
     git-crypt)
-      echo 0.5.0 ;;
+      echo 0.6.0 ;;
     ranch)
       echo 9.5.0 ;;
     pivotal-deliver)
