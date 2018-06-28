@@ -12,10 +12,10 @@ sudo apt-get update --fix-missing || true
 
 sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
-CHROME=google-chrome-${CHROME_VERSION:-stable}_current_amd64.deb
-#curl -Lo $CHROME https://dl.google.com/linux/direct/$CHROME
-curl -Lo $CHROME https://s3.amazonaws.com/travis-utils/google-chrome-stable_54.0.2840_amd64.deb
-if ! sudo dpkg --install $CHROME; then
+CHROME_VERSION="${CHROME_VERSION:-stable}"
+CHROME="google-chrome-stable_${CHROME_VERSION}_amd64.deb"
+curl -Lo "${CHROME}" "https://dl.google.com/linux/direct/${CHROME}"
+if ! sudo dpkg --install "${CHROME}"; then
   sudo apt-get -y --fix-broken install
 fi
 
@@ -28,7 +28,7 @@ fi
 
 # Download a custom chrome-sandbox which works inside OpenVC containers (used on travis).
 curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vendor/chrome-sandbox
-sudo install -m 4755 chrome-sandbox $CHROME_SANDBOX
+sudo install -m 4755 chrome-sandbox "${CHROME_SANDBOX}"
 
 export DISPLAY=:99
 sh /etc/init.d/xvfb start || true # might already be started
