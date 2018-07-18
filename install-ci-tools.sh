@@ -225,7 +225,7 @@ EOF
     mbt)
       if [ ! -x mbt ] || [ "$(./mbt version)" != "$version" ]; then
         rm -f mbt
-        curl -sSL "https://dl.bintray.com/buddyspike/bin/mbt_linux_x86_64/${version}/${version}/:mbt_linux_x86_64" > mbt
+        curl -sSL "https://dl.bintray.com/buddyspike/bin/mbt_linux_x86_64/${version}/${version}/mbt_linux_x86_64" > mbt
         chmod +x mbt
       fi
       ;; 
