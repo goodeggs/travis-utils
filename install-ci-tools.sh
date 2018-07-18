@@ -49,6 +49,8 @@ blessed_version () {
       echo 2.15.2 ;;
     go)
       echo 1.10.1 ;;
+    mbt)
+      echo 0.21.0 ;;
   esac
 }
 
@@ -220,6 +222,13 @@ EOF
         chmod +x direnv
       fi
       ;;
+    mbt)
+      if [ ! -x mbt ] || [ "$(./mbt version)" != "$version" ]; then
+        rm -f mbt
+        curl -sSL "https://dl.bintray.com/buddyspike/bin/mbt_linux_x86_64/${version}/${version}/:mbt_linux_x86_64" > mbt
+        chmod +x mbt
+      fi
+      ;; 
     go)
       if [ ! -x go ] || [ "$(cat ./.go/.version)" != "${version}" ]; then
         rm -rf go godoc gofmt .go
