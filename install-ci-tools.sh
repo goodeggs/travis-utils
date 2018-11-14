@@ -26,7 +26,7 @@ blessed_version () {
     docker-compose)
       echo 1.19.0 ;;
     chromedriver)
-      echo 2.27 ;;
+      echo 2.43 ;;
     yarn)
       echo 0.19.0 ;;
     node)
@@ -262,4 +262,3 @@ EOF
   esac
   echo "✔"
 done
-
