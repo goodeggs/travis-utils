@@ -259,7 +259,7 @@ EOF
       fi
       ;;
     aws)
-      if [ -x aws ] || ./aws --version | egrep -qv "\\b${version}\\b"; then
+      if [ ! -x aws ] || ./aws --version | egrep -qv "\\b${version}\\b"; then
         rm -rf aws .aws
         mkdir -p .aws
         curl -sSLo tmp.zip "https://s3.amazonaws.com/aws-cli/awscli-bundle-${version}.zip"
