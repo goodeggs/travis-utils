@@ -51,6 +51,8 @@ blessed_version () {
       echo 1.10.1 ;;
     mbt)
       echo 0.21.0 ;;
+    aws)
+      echo 1.16.30 ;;
   esac
 }
 
@@ -228,7 +230,7 @@ EOF
         curl -sSL "https://dl.bintray.com/buddyspike/bin/mbt_linux_x86_64/${version}/${version}/mbt_linux_x86_64" > mbt
         chmod +x mbt
       fi
-      ;; 
+      ;;
     go)
       if [ ! -x go ] || [ "$(cat ./.go/.version)" != "${version}" ]; then
         rm -rf go godoc gofmt .go
@@ -254,6 +256,17 @@ export PATH="\$GOROOT/bin:\$PATH"
 EOF
         chmod +x go godoc gofmt
         echo "$version" > ./.go/.version
+      fi
+      ;;
+    aws)
+      if [ -x aws ] || ./aws --version | egrep -qv "\\b${version}\\b"; then
+        rm -rf aws .aws
+        mkdir -p .aws
+        curl -sSLo tmp.zip "https://s3.amazonaws.com/aws-cli/awscli-bundle-${version}.zip"
+        unzip -qqo tmp.zip
+        ./awscli-bundle/install -i $PWD/.aws -b $PWD/aws
+        rm -rf awscli-bundle
+        rm -rf tmp.zip
       fi
       ;;
     *)
