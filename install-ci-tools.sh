@@ -24,7 +24,7 @@ blessed_version () {
   tool=$1
   case $tool in
     docker-compose)
-      echo 1.19.0 ;;
+      echo 1.24.0 ;;
     chromedriver)
       echo 2.43 ;;
     yarn)
