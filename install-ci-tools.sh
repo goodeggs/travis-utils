@@ -40,7 +40,7 @@ blessed_version () {
     git-crypt)
       echo 0.6.0 ;;
     ranch)
-      echo 9.9.0 ;;
+      echo 9.10.0 ;;
     pivotal-deliver)
       echo 2.0.0 ;;
     packer)
