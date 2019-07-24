@@ -193,7 +193,7 @@ EOF
     ranch)
       if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
         rm -f ranch
-        curl -sSL "https://github.com/goodeggs/platform/releases/download/v${version}/ranch-Linux-x86_64" > ranch
+        curl -fsSL http://ranch-updates.goodeggs.com/stable/ranch/${version}/linux-amd64.gz | gunzip > ranch
         chmod +x ranch
       fi
       ;;
