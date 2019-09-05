@@ -52,7 +52,7 @@ blessed_version () {
     mbt)
       echo 0.21.0 ;;
     aws)
-      echo 1.16.30 ;;
+      echo 1.16.232 ;;
   esac
 }
 
