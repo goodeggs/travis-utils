@@ -53,6 +53,8 @@ blessed_version () {
       echo 0.21.0 ;;
     aws)
       echo 1.16.232 ;;
+    git-crypt-keeper)
+      echo master ;;
   esac
 }
 
@@ -189,6 +191,11 @@ while read -r line; do
 done < <(grep -E -v '^\\s*(#|$)' "\$1")
 EOF
       chmod +x envfile
+      ;;
+    git-crypt-keeper)
+      rm -f git-crypt-keeper
+      curl -fsSLo git-crypt-keeper "https://github.com/goodeggs/homebrew-devops/raw/$version/git-crypt-keeper"
+      chmod +x git-crypt-keeper
       ;;
     ranch)
       if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
