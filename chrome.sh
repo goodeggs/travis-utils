@@ -9,6 +9,7 @@ sudo chmod 1777 /dev/shm
 ls -l /dev/shm
 
 sudo apt-get update --fix-missing || true
+sudo apt-get -y install dpkg || true
 
 sudo ln -sf $(which true) $(which xdg-desktop-menu)
 
@@ -16,7 +17,6 @@ CHROME_VERSION="${CHROME_VERSION:-current}"
 CHROME="google-chrome-stable_${CHROME_VERSION}_amd64.deb"
 curl -Lo "${CHROME}" "https://dl.google.com/linux/direct/${CHROME}"
 if ! sudo dpkg --install "${CHROME}"; then
-  sudo apt-get -y install dpkg || true
   sudo apt-get -y --fix-broken install
 fi
 
