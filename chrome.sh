@@ -8,6 +8,7 @@ ls -l /dev/shm
 sudo chmod 1777 /dev/shm
 ls -l /dev/shm
 
+export DEBIAN_FRONTEND=noninteractive
 sudo apt-get update --fix-missing || true
 sudo apt-get -y install dpkg || true
 
