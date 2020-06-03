@@ -5,7 +5,10 @@ set -ex
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
 # Prepare for deploy
-commit=$ECRU_COMMIT # TODO fall back to parsing from local git repo
+commit=$BUILDKITE_COMMIT
+[ -n "$commit" ] || commit=$ECRU_COMMIT
+[ -n "$commit" ] || commit=$(git rev-parse HEAD)
+
 SHA=$commit npm run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
@@ -18,7 +21,7 @@ ranch run -f $STAGING_RANCH_FILE -- npm run postdeploy
 smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
 retry smoke_test
 
-if [ "$DEPLOY_PRODUCTION" -eq 1 ]; then
+if [ "$DEPLOY_PRODUCTION" = "1" ]; then
   # Deploy production
   ranch deploy -f $PRODUCTION_RANCH_FILE
   ranch run -f $PRODUCTION_RANCH_FILE -- npm run postdeploy
