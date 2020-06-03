@@ -5,7 +5,10 @@ set -ex
 retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
 
 # Prepare for deploy
-commit=$ECRU_COMMIT # TODO fall back to parsing from local git repo
+commit=$BUILDKITE_COMMIT
+[ -n "$commit" ] || commit=$ECRU_COMMIT
+[ -n "$commit" ] || commit=$(git rev-parse HEAD)
+
 SHA=$commit npm run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
