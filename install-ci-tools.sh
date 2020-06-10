@@ -54,7 +54,7 @@ blessed_version () {
     aws)
       echo 1.16.232 ;;
     git-crypt-keeper)
-      echo master ;;
+      echo a8ce476 ;;
   esac
 }
 
