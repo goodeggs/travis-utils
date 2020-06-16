@@ -28,9 +28,9 @@ blessed_version () {
     chromedriver)
       echo 2.43 ;;
     yarn)
-      echo 0.19.0 ;;
+      echo 1.9.4 ;;
     node)
-      echo 6.9.4 ;;
+      echo 12.18.0 ;;
     npm)
       echo 3.9.6 ;;
     phantomjs)
