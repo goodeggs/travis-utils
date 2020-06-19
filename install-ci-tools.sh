@@ -200,8 +200,46 @@ EOF
     ranch)
       if [ ! -x ranch ] || [ "$(./ranch version)" != "$version" ]; then
         rm -f ranch
-        curl -fsSL http://ranch-updates.goodeggs.com/stable/ranch/${version}/linux-amd64.gz | gunzip > ranch
+        curl -fsSL "http://ranch-updates.goodeggs.com/stable/ranch/${version}/linux-amd64.gz" | gunzip > ranch_real
+        chmod +x ranch_real
+      cat > ranch <<"EOF"
+#!/bin/bash
+set -e
+set -o pipefail
+
+# Make sure and clean up
+trap "exit" INT TERM ERR
+trap "kill 0" EXIT
+
+if [ -z "$RANCH_PROXY_SSH_KEY" ]
+then
+  echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
+  ranch_real "$@"
+fi
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+export HOSTALIASES=${script_dir}/hostaliases
+echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
+chmod 600 .ssh_key
+
+sshcmd='ssh -o ExitOnForwardFailure=yes -i .ssh_key -l admin'
+case "$RANCH_ENDPOINT" in
+  *huevosbuenos.com*)
+    export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com:8005"
+    $sshcmd -L 8005:ranch-api-staging.internal.huevosbuenos.com:443 jump.us-east-1.dev-aws.goodeggs.com "sleep 900" &
+    ;;
+  *goodeggs.com*)
+    export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com:8005"
+    $sshcmd -L 8005:ranch-api.internal.goodeggs.com:443 jump.us-east-1.prod-aws.goodeggs.com "sleep 900" &
+    ;;
+  sleep 1
+  ranch_real "$@"
+esac
+EOF
         chmod +x ranch
+      cat > hostaliases <<EOF
+127.0.0.1 localhost ranch-api-staging.internal.huevosbuenos.com ranch-api.internal.goodeggs.com
+EOF
       fi
       ;;
     pivotal-deliver)
