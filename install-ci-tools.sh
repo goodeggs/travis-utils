@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-#set -x
 
 sha_matches () {
   tool="$1"
@@ -40,7 +39,7 @@ blessed_version () {
     git-crypt)
       echo 0.6.0 ;;
     ranch)
-      echo 9.12.0 ;;
+      echo 10.0.2 ;;
     pivotal-deliver)
       echo 2.0.0 ;;
     packer)
@@ -205,19 +204,20 @@ EOF
       cat > ranch <<"EOF"
 #!/bin/bash
 
-set -euo pipefail
+set -eo pipefail
 
 # Make sure and clean up
 trap "exit" INT TERM ERR
 trap "kill 0" EXIT
 
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 if [ -z "$RANCH_PROXY_SSH_KEY" ]
 then
   echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
-  ranch_real "$@"
+  exec $script_dir/ranch_real "$@"
 fi
 
-script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 export HOSTALIASES=${script_dir}/hostaliases
 echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 chmod 600 .ssh_key
@@ -232,9 +232,9 @@ case "$RANCH_ENDPOINT" in
     export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com:8005"
     $sshcmd -L 8005:ranch-api.internal.goodeggs.com:443 jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
     ;;
-  sleep 1
-  ranch_real "$@"
-esac
+  esac
+sleep 1
+$script_dir/ranch_real "$@"
 EOF
         chmod +x ranch
       cat > hostaliases <<EOF
