@@ -39,7 +39,7 @@ blessed_version () {
     git-crypt)
       echo 0.6.0 ;;
     ranch)
-      echo 10.0.2 ;;
+      echo 10.0.3 ;;
     pivotal-deliver)
       echo 2.0.0 ;;
     packer)
@@ -218,28 +218,26 @@ then
   exec $script_dir/ranch_real "$@"
 fi
 
-export HOSTALIASES=${script_dir}/hostaliases
 echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 chmod 600 .ssh_key
 
-sshcmd='ssh -o ExitOnForwardFailure=yes -i .ssh_key -l admin'
+sshcmd='ssh -o ExitOnForwardFailure=yes -i .ssh_key -l admin -N'
+export RANCH_SOCKS_PROXY='socks5://127.0.0.1:8005'
+
 case "$RANCH_ENDPOINT" in
   *huevosbuenos.com*)
-    export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com:8005"
-    $sshcmd -L 8005:ranch-api-staging.internal.huevosbuenos.com:443 jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
+    export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com"
+    $sshcmd -D 8005 jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
     ;;
   *)
-    export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com:8005"
-    $sshcmd -L 8005:ranch-api.internal.goodeggs.com:443 jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
+    export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com"
+    $sshcmd -D 8005 jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
     ;;
   esac
 sleep 1
 $script_dir/ranch_real "$@"
 EOF
         chmod +x ranch
-      cat > hostaliases <<EOF
-127.0.0.1 localhost ranch-api-staging.internal.huevosbuenos.com ranch-api.internal.goodeggs.com
-EOF
       fi
       ;;
     pivotal-deliver)
