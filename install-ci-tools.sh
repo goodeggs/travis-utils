@@ -204,7 +204,7 @@ EOF
       cat > ranch <<"EOF"
 #!/bin/bash
 
-set -eo pipefail
+set -euo pipefail
 
 # Make sure and clean up
 trap "exit" INT TERM ERR
@@ -212,14 +212,15 @@ trap "kill 0" EXIT
 
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-if [ -z "$RANCH_PROXY_SSH_KEY" ]
+if [ -z "${RANCH_PROXY_SSH_KEY:-}" ]
 then
   echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
-  exec $script_dir/ranch_real "$@"
+  exec "$script_dir/ranch_real" "$@"
 fi
 
-echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
+touch .ssh_key
 chmod 600 .ssh_key
+echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 
 sshcmd='ssh -o ExitOnForwardFailure=yes -i .ssh_key -l admin -N'
 export RANCH_SOCKS_PROXY='socks5://127.0.0.1:8005'
@@ -235,7 +236,7 @@ case "$RANCH_ENDPOINT" in
     ;;
   esac
 sleep 1
-$script_dir/ranch_real "$@"
+"$script_dir/ranch_real" "$@"
 EOF
         chmod +x ranch
       fi
