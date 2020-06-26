@@ -212,6 +212,11 @@ trap "kill 0" EXIT
 
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
+exec "$script_dir/ranch_real" "$@"
+
+
 if [ -z "${RANCH_PROXY_SSH_KEY:-}" ]
 then
   echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
