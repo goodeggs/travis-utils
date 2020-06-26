@@ -222,7 +222,7 @@ touch .ssh_key
 chmod 600 .ssh_key
 echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 
-sshcmd='ssh -o ExitOnForwardFailure=yes -i .ssh_key -l admin -N'
+sshcmd='ssh -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -i .ssh_key -l admin -N'
 export RANCH_SOCKS_PROXY='socks5://127.0.0.1:8005'
 
 case "$RANCH_ENDPOINT" in
