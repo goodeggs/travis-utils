@@ -210,12 +210,7 @@ set -euo pipefail
 trap "exit" INT TERM ERR
 trap "kill 0" EXIT
 
-
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
-echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
-exec "$script_dir/ranch_real" "$@"
-
 
 if [ -z "${RANCH_PROXY_SSH_KEY:-}" ]
 then
@@ -230,7 +225,7 @@ echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 sshcmd='ssh -o UserKnownHostsFile=/dev/null -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -i .ssh_key -l admin -N'
 export RANCH_SOCKS_PROXY='socks5://127.0.0.1:8005'
 
-case "$RANCH_ENDPOINT" in
+case "${RANCH_ENDPOINT:-}" in
   *huevosbuenos.com*)
     export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com"
     $sshcmd -D 8005 jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
