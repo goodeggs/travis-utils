@@ -213,6 +213,7 @@ trap "exit" INT TERM ERR
 trap "kill 0" EXIT
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+exec "$script_dir/ranch_real" "$@"
 
 if [ -z "${RANCH_PROXY_SSH_KEY:-}" ]
 then
