@@ -205,15 +205,17 @@ EOF
 #!/bin/bash
 
 set -euo pipefail
-set -x
-echo "Debugging, will remove in another iterration"
+export ssh_pid=''
+
+function cleanup {
+  [[ "$ssh_pid" != '' ]] && kill $ssh_pid; exit 0
+}
 
 # Make sure and clean up
 trap "exit" INT TERM ERR
-trap "kill 0" EXIT
+trap "cleanup" EXIT
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-exec "$script_dir/ranch_real" "$@"
 
 if [ -z "${RANCH_PROXY_SSH_KEY:-}" ]
 then
@@ -232,10 +234,12 @@ case "${RANCH_ENDPOINT:-}" in
   *huevosbuenos.com*)
     export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com"
     $sshcmd -D 8005 jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
+    ssh_pid=$!
     ;;
   *)
     export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com"
     $sshcmd -D 8005 jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
+    ssh_pid=$!
     ;;
   esac
 sleep 1
