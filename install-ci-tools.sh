@@ -205,6 +205,8 @@ EOF
 #!/bin/bash
 
 set -euo pipefail
+set -x
+echo "Debugging, will remove in another iterration"
 
 # Make sure and clean up
 trap "exit" INT TERM ERR
