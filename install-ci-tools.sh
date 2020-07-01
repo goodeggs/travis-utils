@@ -205,15 +205,10 @@ EOF
 #!/bin/bash
 
 set -euo pipefail
-export ssh_pid=''
 
 function cleanup {
-  [[ "$ssh_pid" != '' ]] && kill $ssh_pid; exit 0
+  [[ "${ssh_pid:-}" != '' ]] && kill ${ssh_pid:-}; exit 0
 }
-
-# Make sure and clean up
-trap "exit" INT TERM ERR
-trap "cleanup" EXIT
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
@@ -222,6 +217,10 @@ then
   echo "This will break in the near future, please set RANCH_PROXY_SSH_KEY"
   exec "$script_dir/ranch_real" "$@"
 fi
+
+# Make sure and clean up
+trap "exit" INT TERM ERR
+trap "cleanup" EXIT
 
 touch .ssh_key
 chmod 600 .ssh_key
