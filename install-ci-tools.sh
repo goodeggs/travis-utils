@@ -207,7 +207,8 @@ EOF
 set -euo pipefail
 
 function cleanup {
-  [[ "${ssh_pid:-}" != '' ]] && kill ${ssh_pid:-}; exit 0
+  rv=$?
+  [[ "${ssh_pid:-}" != '' ]] && kill ${ssh_pid:-}; exit $rv
 }
 
 script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
