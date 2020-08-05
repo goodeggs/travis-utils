@@ -93,7 +93,7 @@ EOF
       if [ ! -x yarn ] || [ "$(./yarn -V)" != "$version" ]; then
         rm -rf yarn .yarn
         mkdir -p .yarn
-        curl -sSL "https://github.com/yarnpkg/yarn/releases/download/v${version}/yarn-v${version}.tar.gz" | tar xz -C .yarn --strip 1
+        curl --retry 3 --retry-connrefused -sSL "https://github.com/yarnpkg/yarn/releases/download/v${version}/yarn-v${version}.tar.gz" | tar xz -C .yarn --strip 1
         ln -s "$PWD/.yarn/bin/yarn"
       fi
       # put the yarn cache outside of $CACHE_DIR
@@ -105,7 +105,7 @@ EOF
       if [ ! -x node ] || [ "$(./node -v)" != "v${version}" ]; then
         rm -rf node npm .node
         mkdir -p .node
-        curl -sSL "https://nodejs.org/dist/v${version}/node-v${version}-linux-x64.tar.xz" | tar xJ -C .node --strip 1
+        curl --retry 3 --retry-connrefused -sSL "https://nodejs.org/dist/v${version}/node-v${version}-linux-x64.tar.xz" | tar xJ -C .node --strip 1
         ln -s "$PWD/.node/bin/node"
         ln -s "$PWD/.node/bin/npm"
       fi
