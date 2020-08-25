@@ -242,7 +242,11 @@ case "${RANCH_ENDPOINT:-}" in
     ssh_pid=$!
     ;;
   esac
-sleep 1
+
+while ! nc -z localhost "8005"; do
+  sleep 0.1 # wait for 1/10 of the second before check again
+done
+
 "$script_dir/ranch_real" "$@"
 EOF
         chmod +x ranch
