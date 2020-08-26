@@ -227,18 +227,19 @@ touch .ssh_key
 chmod 600 .ssh_key
 echo "$RANCH_PROXY_SSH_KEY" | base64 -d > .ssh_key
 
+port="$(( ( RANDOM % 4000 )  + 2000 ))"
 sshcmd='ssh -o UserKnownHostsFile=/dev/null -o ExitOnForwardFailure=yes -o StrictHostKeyChecking=no -i .ssh_key -l admin -N'
-export RANCH_SOCKS_PROXY='socks5://127.0.0.1:8005'
+export RANCH_SOCKS_PROXY="socks5://127.0.0.1:${port}"
 
 case "${RANCH_ENDPOINT:-}" in
   *huevosbuenos.com*)
     export RANCH_ENDPOINT="https://ranch-api-staging.internal.huevosbuenos.com"
-    $sshcmd -D 8005 jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
+    $sshcmd -D "${port}" jump.us-east-1.dev-aws.goodeggs.com "sleep 3600" &
     ssh_pid=$!
     ;;
   *)
     export RANCH_ENDPOINT="https://ranch-api.internal.goodeggs.com"
-    $sshcmd -D 8005 jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
+    $sshcmd -D "${port}" jump.us-east-1.prod-aws.goodeggs.com "sleep 3600" &
     ssh_pid=$!
     ;;
   esac
