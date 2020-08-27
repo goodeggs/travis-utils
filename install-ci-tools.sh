@@ -244,7 +244,7 @@ case "${RANCH_ENDPOINT:-}" in
     ;;
   esac
 
-while ! /bin/nc -z localhost "${port}"; do
+while ! nc -z localhost "${port}"; do
   sleep 0.1 # wait for 1/10 of the second before check again
 done
 
