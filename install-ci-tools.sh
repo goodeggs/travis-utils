@@ -29,7 +29,7 @@ blessed_version () {
     yarn)
       echo 1.9.4 ;;
     node)
-      echo 12.18.0 ;;
+      echo 14.16.0 ;;
     npm)
       echo 3.9.6 ;;
     phantomjs)
