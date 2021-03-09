@@ -170,7 +170,7 @@ set -e
 [ -f .git-crypt.key.enc ] || ( echo ".git-crypt.key.enc not found or not readable" ; exit 1 )
 
 keyfile=\$(mktemp)
-openssl aes-256-cbc -k "\$GITCRYPT_PASS" -in .git-crypt.key.enc -out "\$keyfile" -d
+openssl aes-256-cbc -k "\$GITCRYPT_PASS" -in .git-crypt.key.enc -out "\$keyfile" -d -md md5 || openssl aes-256-cbc -k "\$GITCRYPT_PASS" -in .git-crypt.key.enc -out "\$keyfile" -d
 git-crypt unlock "\$keyfile"
 rm "\$keyfile"
 
