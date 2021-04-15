@@ -54,6 +54,8 @@ blessed_version () {
       echo 1.16.232 ;;
     git-crypt-keeper)
       echo a8ce476 ;;
+    codecov)
+      echo 89c658e261d5f25533598a222fd96cf17a5fa0eb3772f2defac754d9970b2ec8 ;;
   esac
 }
 
@@ -275,6 +277,14 @@ EOF
         ./awscli-bundle/install -i $PWD/.aws -b $PWD/aws
         rm -rf awscli-bundle
         rm -rf tmp.zip
+      fi
+      ;;
+    codecov)
+      if [ ! -x codecov ] || ! echo "$version codecov" | sha256sum -c -; then
+        rm -rf codecov
+        curl -so codecov https://codecov.io/bash
+        echo "$version codecov" | sha256sum -c -
+        chmod +x codecov
       fi
       ;;
     *)
