@@ -55,7 +55,7 @@ blessed_version () {
     git-crypt-keeper)
       echo a8ce476 ;;
     codecov)
-      echo 89c658e261d5f25533598a222fd96cf17a5fa0eb3772f2defac754d9970b2ec8 ;;
+      echo d6aa3207c4908d123bd8af62ec0538e3f2b9f257c3de62fad4e29cd3b59b41d9 ;;
   esac
 }
 
