@@ -205,12 +205,6 @@ EOF
         chmod +x ranch
       fi
       ;;
-#!/bin/sh
-set -e
-git log --format=full "\$ECRU_LIVE_COMMIT..\$ECRU_COMMIT" | pivotal-deliver
-EOF
-      chmod +x deliver-pivotal-stories
-      ;;
     packer)
       if [ ! -x packer ] || ./packer -v | egrep -qv "\\b${version}\\b"; then
         curl -sSLo tmp.zip "https://releases.hashicorp.com/packer/${version}/packer_${version}_linux_amd64.zip"
