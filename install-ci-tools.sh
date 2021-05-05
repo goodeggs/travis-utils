@@ -40,8 +40,6 @@ blessed_version () {
       echo 0.6.0 ;;
     ranch)
       echo 10.4.1 ;;
-    pivotal-deliver)
-      echo 2.0.0 ;;
     packer)
       echo 1.0.3 ;;
     direnv)
@@ -207,13 +205,6 @@ EOF
         chmod +x ranch
       fi
       ;;
-    pivotal-deliver)
-      if [ ! -x pivotal-deliver ] || [ "$(./pivotal-deliver -v)" != "$version" ]; then
-        rm -f pivotal-deliver
-        curl -sSL "https://github.com/goodeggs/pivotal-deliver/releases/download/v${version}/pivotal-deliver-Linux-x86_64" > pivotal-deliver
-        chmod +x pivotal-deliver
-      fi
-      cat > deliver-pivotal-stories <<EOF
 #!/bin/sh
 set -e
 git log --format=full "\$ECRU_LIVE_COMMIT..\$ECRU_COMMIT" | pivotal-deliver
