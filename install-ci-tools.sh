@@ -53,7 +53,7 @@ blessed_version () {
     git-crypt-keeper)
       echo a8ce476 ;;
     codecov)
-      echo 65289785bc738dec8dce952b0fb3bdea1b68453a4db27451d1270b9842ae3cb8 ;;
+      echo 1.0.6 ;;
   esac
 }
 
@@ -265,10 +265,9 @@ EOF
       fi
       ;;
     codecov)
-      if [ ! -x codecov ] || ! echo "$version codecov" | sha256sum -c -; then
+      if [ ! -x codecov ] || ! ./codecov -h | egrep -q "\\b${version}\\b"; then
         rm -rf codecov
-        curl -so codecov https://codecov.io/bash
-        echo "$version codecov" | sha256sum -c -
+        curl -Lso codecov "https://github.com/codecov/codecov-bash/raw/${version}/codecov"
         chmod +x codecov
       fi
       ;;
