@@ -33,7 +33,7 @@ curl -Lo chrome-sandbox https://github.com/goodeggs/travis-utils/raw/master/vend
 sudo install -m 4755 chrome-sandbox "${CHROME_SANDBOX}"
 
 export DISPLAY=:99
-if ! [ -x "$(command -v systemctl)" ]; then
+if ! [ -x /run/systemd/system ] then
   sh /etc/init.d/xvfb start || true # might already be started
 else
   sudo systemctl start xvfb # systemctl will not error if already started
