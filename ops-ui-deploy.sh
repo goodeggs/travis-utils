@@ -24,13 +24,13 @@ then
   echo 'No staging environment. Skipping deploy to staging and smoke test.'
 else
   : "${S3_STAGING_BUCKET:?must be set}"
-  SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=staging npm run predeploy
+  SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=staging yarn run predeploy
   deploy_to_s3 $S3_STAGING_BUCKET
-  FASTLY_SERVICE=$STAGING_FASTLY_SERVICE npm run postdeploy
+  FASTLY_SERVICE=$STAGING_FASTLY_SERVICE yarn run postdeploy
 
   # Smoke tests
   retry () { for i in 1 2 3; do "$@" && return || sleep 10; done; exit 1; }
-  smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
+  smoke_test () { SMOKE_TEST_ENV=staging yarn run test:smoke; }
   retry smoke_test
 fi
 
@@ -42,6 +42,6 @@ then
 fi
 
 # Deploy to production
-SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=production npm run predeploy
+SHA=$commit NODE_ENV=production BUILD_ENV=production APP_INSTANCE=production yarn run predeploy
 deploy_to_s3 $S3_PRODUCTION_BUCKET
-FASTLY_SERVICE=$PRODUCTION_FASTLY_SERVICE npm run postdeploy
+FASTLY_SERVICE=$PRODUCTION_FASTLY_SERVICE yarn run postdeploy

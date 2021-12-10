@@ -9,7 +9,7 @@ commit=$BUILDKITE_COMMIT
 [ -n "$commit" ] || commit=$ECRU_COMMIT
 [ -n "$commit" ] || commit=$(git rev-parse HEAD)
 
-SHA=$commit npm run predeploy
+SHA=$commit yarn run predeploy
 echo "module.exports = '$commit';" > ./version.js
 
 STAGING_RANCH_FILE='.ranch.staging.yaml'
@@ -18,8 +18,8 @@ PRODUCTION_RANCH_FILE=$([ -f '.ranch.production.yaml' ] && echo '.ranch.producti
 # Deploy staging
 if [ -f "$STAGING_RANCH_FILE" ]; then
   ranch deploy -f "$STAGING_RANCH_FILE"
-  ranch run -f "$STAGING_RANCH_FILE" -- npm run postdeploy
-  smoke_test () { SMOKE_TEST_ENV=staging npm run test:smoke; }
+  ranch run -f "$STAGING_RANCH_FILE" -- yarn run postdeploy
+  smoke_test () { SMOKE_TEST_ENV=staging yarn run test:smoke; }
   retry smoke_test
 else
   echo "WARNING: $STAGING_RANCH_FILE not found, skipping staging deploy..."
@@ -28,7 +28,7 @@ fi
 if [ "$DEPLOY_PRODUCTION" = "1" ]; then
   # Deploy production
   ranch deploy -f "$PRODUCTION_RANCH_FILE"
-  ranch run -f "$PRODUCTION_RANCH_FILE" -- npm run postdeploy
+  ranch run -f "$PRODUCTION_RANCH_FILE" -- yarn run postdeploy
 else
   echo "DEPLOY_PRODUCTION env var is not set to 1. Not deploying to production."
 fi
