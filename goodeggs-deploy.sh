@@ -33,8 +33,17 @@ else
   echo "DEPLOY_PRODUCTION env var is not set to 1. Not deploying to production."
 fi
 
-# Apply changes to Statsfile (.js, .babel.ts, .coffee, etc.), if any.
-statsfile=$(ls Statsfile.*)
+# Apply changes to Statsfile, if any.
+# It's important to check not the _code contents_ of the file, but the final
+# exported result, since it may dynamically generate the final Statsfile config.
+# Unfortunately, the simplest way to be as broadly compatible as possible (w/
+# CoffeeScript, TypeScript, various versions of Babel, etc.) is to `require` the _built_
+# Statsfile - although note that below we don't end up actually exercising the built code.
+# I'm sorry this is confusing.
+# ASSUMPTIONS:
+# - code is built into `./build/`
+# - Statsfile is built (there's no other reason to do so)
+statsfile=$(ls build/Statsfile*.js)
 if [ -f "$statsfile" ]; then
   # NOTE: importing Statsfile may import some app modules and log things, so we hash only on the last logged line
   # For example, apps are known to log "STATUS_API_TOKEN required, but not set. Configuring goodeggs-status in simulate mode"
