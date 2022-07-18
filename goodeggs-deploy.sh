@@ -50,7 +50,7 @@ if [ -f "$statsfile" ]; then
   # within a full JSON log line with a timestamp - which makes this hashing nondeterministic. :(
   statsfile_hash=$(babel-node -e "console.log(JSON.stringify(require('./$statsfile')))" | tail -1 | md5sum | cut -d ' ' -f 1)
   goodeggs_stats_cli_version=$(node -e 'console.log(require("./package.json").devDependencies["goodeggs-stats-cli"])')
-  if ["$goodeggs_stats_cli_version" = "null"]; then
+  if [ "$goodeggs_stats_cli_version" = "null" ]; then
     echo "WARNING: Statsfile found but no dev dependency on goodeggs-stats-cli."
     echo "Unable to reapply Statsfile when version changes."
   fi
