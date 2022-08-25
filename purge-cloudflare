@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+hostname="${1:-}"
+if [[ "$hostname" == "" ]]; then
+  echo "usage: purge-cloudflare <hostname>"
+  echo "       purge-cloudflare some-ui.goodeggs.com"
+  exit 1
+fi
+
+case "$hostname" in
+  *.goodeggs.com) zone_id="afbfcdd3396d0137b135d06108479c18" ;;
+  *.huevosbuenos.com) zone_id="18214f6fd104db7c0fe4b5c0d1d9d545" ;;
+  *) echo "unknown hostname, please update purge-cloudflare script." ; exit 1 ;;
+esac
+
+curl -X POST "https://api.cloudflare.com/client/v4/zones/${zone_id}/purge_cache" \
+     -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+     -H "Content-Type: application/json" \
+     --data '{"prefixes":["'"$hostname"'"]}'
