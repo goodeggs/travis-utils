@@ -21,7 +21,7 @@ deploy_to_s3 () {
 echo "module.exports = '$commit';" > ./version.js
 
 # Deploy to staging, if necessary. Set `NO_STAGING` to `1` if no staging environment.
-if [ "$NO_STAGING" -eq 1 ]
+if [ "$NO_STAGING" = 1 ]
 then
   echo 'No staging environment. Skipping deploy to staging and smoke test.'
 else
