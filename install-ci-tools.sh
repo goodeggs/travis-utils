@@ -39,7 +39,7 @@ blessed_version () {
     git-crypt)
       echo 0.6.0 ;;
     ranch)
-      echo 10.9.0 ;;
+      echo 10.10.1 ;;
     packer)
       echo 1.0.3 ;;
     direnv)
