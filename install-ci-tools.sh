@@ -151,7 +151,10 @@ EOF
       fi
       ;;
     git-crypt)
-      if [ ! -x git-crypt ] || git-crypt --version 2>&1 | egrep -qv "\\b${version}\\b"; then
+      system_git_crypt=$(command -v git-crypt || true)
+      if [ -n "$system_git_crypt" ] && [ "$system_git_crypt" != "$PWD/git-crypt" ]; then
+        echo "Using git-crypt already installed at $system_git_crypt"
+      elif [ ! -x git-crypt ] || git-crypt --version 2>&1 | egrep -qv "\\b${version}\\b"; then
         # we'll assume this is already installed?
         #sudo apt-get install -y libssl-dev
         tmpdir=$(mktemp -d)
